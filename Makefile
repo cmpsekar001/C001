@@ -13,7 +13,9 @@ monerod:
 		-DCMAKE_BUILD_TYPE=Release \
 		-DMANUAL_SUBMODULES=1 \
 		-DCMAKE_PREFIX_PATH="$$PREFIX" \
-		-DBoost_NO_BOOST_CMAKE=ON
+		-DBoost_NO_BOOST_CMAKE=ON \
+		-DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations" \
+		-DCMAKE_C_FLAGS="-Wno-deprecated-declarations"
 	@echo "=== Building daemon safely with 2 threads ==="
 	cd $(BUILD_DIR) && make daemon -j2
 	@echo "=== Build Complete! Binary located at: $(BUILD_DIR)/bin/monerod ==="
