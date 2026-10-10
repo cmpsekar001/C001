@@ -1,4 +1,4 @@
-# Root Makefile for building Monero Daemon with VerusHash Integration
+# Root Makefile for building Monero Daemon with VerusHash Integration on Termux/Linux
 
 BUILD_DIR = monero-core/build
 
@@ -7,11 +7,15 @@ BUILD_DIR = monero-core/build
 all: monerod
 
 monerod:
-	@echo "=== Configuring Monero with CMake (Manual Submodules) ==="
+	@echo "=== Configuring Monero with CMake for Termux ==="
 	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && cmake .. -DCMAKE_BUILD_TYPE=Release -DMANUAL_SUBMODULES=1
-	@echo "=== Building daemon ==="
-	cd $(BUILD_DIR) && make daemon -j$$(nproc)
+	cd $(BUILD_DIR) && cmake .. \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DMANUAL_SUBMODULES=1 \
+		-DCMAKE_PREFIX_PATH="$$PREFIX" \
+		-DBoost_NO_BOOST_CMAKE=ON
+	@echo "=== Building daemon safely with 2 threads ==="
+	cd $(BUILD_DIR) && make daemon -j2
 	@echo "=== Build Complete! Binary located at: $(BUILD_DIR)/bin/monerod ==="
 
 clean:

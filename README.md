@@ -80,7 +80,7 @@ To compile and run the custom daemon on mobile ARM architectures via Termux, fol
     Bash
 
     pkg update
-    pkg install clang make cmake git boost openssl libzmq unbound
+    pkg install clang make cmake pkg-config git boost openssl libzmq unbound
 
     Build the Daemon:
     The root Makefile is configured to automatically detect and handle Termux's custom prefix environment variables ($PREFIX) and CMake fallback parameters (-DBoost_NO_BOOST_CMAKE=ON). Simply run:
