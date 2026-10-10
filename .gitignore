@@ -4,3 +4,6 @@
 *.a
 *.so
 bin/
+build/
+*.o
+miner_client

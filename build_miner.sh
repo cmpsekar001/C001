@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# Handle 'clean' command
+if [ "$1" = "clean" ]; then
+    echo "=== Cleaning up build artifacts ==="
+    rm -rf build/ *.o miner_client
+    echo "Cleanup complete."
+    exit 0
+fi
+
 # Create a build directory for object files
 mkdir -p build
 
@@ -8,10 +16,10 @@ echo "=== Building VerusHash Monero Miner Client ==="
 
 echo "[1/2] Compiling C cryptographic sources..."
 gcc -O3 -c monero-core/src/crypto/verushash/haraka.c -o build/haraka.o \
-    -Iverushash-staging -Imonero-core/src/crypto/verushash -maes -msse2 -mpclmul -mssse3
+    -Imonero-core/src/crypto/verushash -maes -msse2 -mpclmul -mssse3
 
 gcc -O3 -c monero-core/src/crypto/verushash/haraka_portable.c -o build/haraka_portable.o \
-    -Iverushash-staging -Imonero-core/src/crypto/verushash -maes -msse2 -mpclmul -mssse3
+    -Imonero-core/src/crypto/verushash -maes -msse2 -mpclmul -mssse3
 
 echo "[2/2] Compiling C++ components and linking binary..."
 g++ -O3 miner_client.cpp \
@@ -23,7 +31,6 @@ g++ -O3 miner_client.cpp \
     monero-core/src/crypto/verushash/utilstrencodings.cpp \
     build/haraka.o \
     build/haraka_portable.o \
-    -Iverushash-staging \
     -Imonero-core/src \
     -Imonero-core/src/crypto/verushash \
     -Imonero-core/src/crypto/verushash/univalue/include \
