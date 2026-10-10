@@ -76,11 +76,11 @@ Build Instructions (monerod on Linux)
 To compile and run the custom daemon on mobile ARM architectures via Termux, follow these setup steps:
 
     Install Prerequisites in Termux:
-    Update your package manager and install the required compiler toolchains, Boost development packages, OpenSSL, and ZMQ:
+    Update your package manager and install the unified Boost package, compiler toolchains, OpenSSL, and ZMQ:
     Bash
 
     pkg update
-    pkg install clang make cmake git boost libboost-dev libboost_filesystem-dev libboost_system-dev libboost_thread-dev libboost_serialization-dev libboost_program-options-dev openssl libzmq unbound
+    pkg install clang make cmake git boost openssl libzmq unbound
 
     Build the Daemon:
     The root Makefile is configured to automatically detect and handle Termux's custom prefix environment variables ($PREFIX) and CMake fallback parameters (-DBoost_NO_BOOST_CMAKE=ON). Simply run:
@@ -111,3 +111,5 @@ This is an experimental, academic project demonstrating cross-consensus blockcha
     Monero Project: For pioneering decentralized transaction privacy.
 
     Verus Coin Developers: For the innovative CPU-focused VerusHash consensus design.
+
+
