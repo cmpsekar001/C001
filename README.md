@@ -1,84 +1,90 @@
-# Monero-Verus Hybrid Blockchain
+# Monero-Verus Hybrid Mining & Consensus Client
 
 [![License: MIT/BSD](https://img.shields.io/badge/License-Custom-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Experimental%20%2F%20Academic%20Project-orange.svg)]()
 
-A custom cryptographic currency project integrating **Monero's** advanced privacy architecture (CryptoNote, RingCT, stealth addresses) with the **Verus** consensus algorithm and hashing framework (`VerusHash`). 
+A lightweight, standalone C++ VerusHash mining and consensus client integrating **Monero's** advanced cryptography primitives with the **Verus** hashing framework (`VerusHash`, `Haraka`, and `CLHash`). 
 
-This project explores the fusion of high-tier financial privacy with CPU-efficient, secure, and resistance-tailored consensus mechanics.
+This project explores cross-consensus architecture optimized for high-performance CPU execution across standard **Linux (x86_64)** and **Android (Termux / ARM)** environments.
 
 ---
 
 ## 🏗️ Project Architecture & Overview
 
-This repository bridges two powerful open-source blockchain ecosystems:
-1. **Monero Core (`monero-core/`):** Provides the robust anonymity layer, peer-to-peer networking, wallet management, and transaction structuring.
-2. **Verus Integration (`verushash-staging/` & `verus-core/`):** Incorporates the optimized Verus hashing functions (`VerusHash`, `haraka`, and `clhash`) to power the block hashing and consensus mechanism instead of native RandomX.
+This repository unifies essential cryptographic sub-modules into a streamlined workspace:
+1. **Monero Core (`monero-core/`):** Houses Monero's core crypto library source tree, including integrated VerusHash bindings, data structures (`uint256`, `arith_uint256`), and univalue components.
+2. **Unified Crypto Sources (`monero-core/src/crypto/verushash/`):** Combines Haraka, CLHash, and portable software simulation fallbacks directly within the Monero tree to eliminate redundancy.
 
 ### Key Features
-* **Privacy-First Transactions:** Retains Monero's cryptographic mixing properties.
-* **Verus Algorithm Integration:** Leverages high-performance CPU hashing primitives for mining and validation.
-* **Custom Daemon (`monerod`):** Compiled from source with custom Makefile and CMake rules incorporating Verus headers.
+- **Standalone C++ Miner Client (`miner_client`):** High-efficiency mining execution loop.
+- **Cross-Platform Support:** Fully compatible with standard Linux systems and mobile ARM architectures via Termux on Android.
+- **Optimized Hybrid Compilation:** Automated script managing C/C++ compilation splits, object file isolation, and SIMD instruction flags.
 
 ---
 
 ## 📂 Repository Structure
 
 ```text
-├── monero-core/         # Modified Monero source code and daemon logic
-├── verus-core/          # Verus reference files and dependencies
-├── verushash-staging/   # VerusHash implementation headers and source (Haraka, clhash, sse2neon)
-├── README.md            # Project documentation
-└── .gitignore           # Excludes build binaries and temporary files
-
+├── monero-core/        # Integrated Monero source code and Verus crypto primitives
+├── build_miner.sh      # Automated build and cleanup script
+├── miner_client.cpp    # Standalone C++ miner client entry point
+├── README.md           # Project documentation
+└── .gitignore          # Excludes build artifacts and temporary files
 
 ⚙️ Getting Started & Compilation
-
-To build the custom monerod executable with Verus integration from source, follow these steps:
 Prerequisites
 
-Ensure you have the required development tools and libraries installed (standard dependencies for building Monero/Verus):
+Ensure your development environment has the necessary compiler toolchains installed:
 
-    CMake (v3.10+)
+    GCC / G++ (supporting C++11/C++14)
 
-    GCC / Clang with C++11/C++14 support
+    Make / Bash shell
 
-    Boost libraries, OpenSSL, libunbound, and ZMQ
+    Target hardware instruction support (AES, SSE2, PCLMUL, SSSE3)
 
 Build Instructions
 
-    Clone the repository with subfolders:
+    Clone the repository:
     Bash
 
     git clone [https://github.com/cmpsekar001/C001.git](https://github.com/cmpsekar001/C001.git)
     cd C001
 
-    Navigate to the Monero core source directory:
+    Make the build script executable:
     Bash
 
-    cd monero-core
+    chmod +x build_miner.sh
 
-    Create a build directory and compile:
+    Compile the miner client:
     Bash
 
-    mkdir build && cd build
-    cmake ..
-    make -j$(nproc)
+    ./build_miner.sh
 
-    Locate the binary:
-    Once compilation completes successfully, your custom daemon (monerod) will be available in the build/bin/ directory.
+    The script will automatically compile C cryptographic sources with gcc (preserving flat C linkage), compile C++ components, handle object file organization in a temporary build/ directory, and output the final binary ./miner_client.
 
-🤝 Contributing to Monero & Verus Ecosystems
+    Cleaning Build Artifacts:
+    To wipe out temporary object files and binaries, run:
+    Bash
+
+    ./build_miner.sh clean
+
+📱 Android & Termux Support
+
+For deployment on Android devices via Termux:
+
+    Ensure your architecture has proper toolchain support installed (pkg install clang make git).
+
+    The build script handles portable fallbacks and instruction flags for cross-architecture compatibility.
+
+🤝 Contributing
 
 We welcome contributions, code reviews, and performance optimizations from developers across both the Monero and Verus communities!
-
-Whether you are looking to optimize verushash-staging memory performance or refine the CryptoNote consensus bindings:
 
     Fork the Repository
 
     Create your Feature Branch (git checkout -b feature/OptimizationFeature)
 
-    Commit your Changes (git commit -m 'Add optimized Haraka hashing pipeline')
+    Commit your Changes (git commit -m 'Add optimized hashing pipeline')
 
     Push to the Branch (git push origin feature/OptimizationFeature)
 
@@ -86,8 +92,7 @@ Whether you are looking to optimize verushash-staging memory performance or refi
 
 🛡️ Disclaimer
 
-This is an experimental, academic yearly project demonstrating cross-consensus blockchain architecture. It is not audited for mainnet production financial use.
-
+This is an experimental, academic project demonstrating cross-consensus blockchain architecture. It is not audited for mainnet production financial use.
 📜 Acknowledgments
 
     Monero Project: For pioneering decentralized transaction privacy.
