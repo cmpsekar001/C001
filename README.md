@@ -18,7 +18,7 @@ This repository unifies essential cryptographic modules into a streamlined works
 ### Key Features
 - **Custom Monero Daemon (`monerod`):** Compiled from source using Monero's CMake/Make build system with integrated Verus consensus bindings.
 - **Cross-Platform Support:** Fully compatible with standard Linux systems and mobile ARM environments via Termux on Android.
-- **Optimized Compilation Rules:** Automated root `Makefile` handling manual submodules and Release configuration parameters.
+- **Optimized Compilation Rules:** Automated root `Makefile` handling manual submodules, release configurations, and platform prefix paths.
 
 ---
 
@@ -33,7 +33,7 @@ This repository unifies essential cryptographic modules into a streamlined works
 └── .gitignore          # Excludes build binaries and temporary files
 
 ⚙️ Getting Started & Compilation
-Prerequisites
+Prerequisites (Standard Linux / x86_64)
 
 Ensure your development environment has the necessary toolchains and libraries installed:
 
@@ -43,7 +43,7 @@ Ensure your development environment has the necessary toolchains and libraries i
 
     Boost libraries, OpenSSL, libunbound, and ZMQ
 
-Build Instructions (monerod)
+Build Instructions (monerod on Linux)
 
     Clone the repository:
     Bash
@@ -73,11 +73,21 @@ Build Instructions (monerod)
 
 📱 Android & Termux Support
 
-For deployment and compilation on mobile ARM architectures via Termux:
+To compile and run the custom daemon on mobile ARM architectures via Termux, follow these setup steps:
 
-    Install development prerequisites (pkg install clang make cmake boost openssl libzmq git).
+    Install Prerequisites in Termux:
+    Update your package manager and install the required compiler toolchains, Boost development packages, OpenSSL, and ZMQ:
+    Bash
 
-    Use the same root Makefile workflow (make monerod) to cross-compile or compile natively on-device.
+    pkg update
+    pkg install clang make cmake git boost libboost-dev libboost_filesystem-dev libboost_system-dev libboost_thread-dev libboost_serialization-dev libboost_program-options-dev openssl libzmq unbound
+
+    Build the Daemon:
+    The root Makefile is configured to automatically detect and handle Termux's custom prefix environment variables ($PREFIX) and CMake fallback parameters (-DBoost_NO_BOOST_CMAKE=ON). Simply run:
+    Bash
+
+    make clean
+    make monerod
 
 🤝 Contributing
 
